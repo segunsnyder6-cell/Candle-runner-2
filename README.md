@@ -4,15 +4,15 @@
 
 GitHub's **Code** tab shows HTML as code. That is normal. To actually play the game, open this updated web-preview link in Safari:
 
-### Main Play Now link — bottom-right fullscreen controls
+### Main Play Now link — fullscreen dock with trade info
 
-[▶ PLAY NOW — BOTTOM-RIGHT FULLSCREEN CONTROLS](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/PLAY-FS-BOTTOM-RIGHT.html)
+[▶ PLAY NOW — FULLSCREEN DOCK WITH TRADE INFO](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/PLAY-FS-BOTTOM-RIGHT.html)
 
 This fresh Play file includes the newest layout request:
 
 - Normal chart view: the enter-fullscreen button is moved into the **bottom-right chart controls area**.
-- Fullscreen view: the exit-fullscreen button moves into the **right-side slot where SL→BE was**.
-- SL→BE moves left/center beside the Close button, where the arrow pointed.
+- Fullscreen view: the bottom dock keeps the clean **three equal buttons**: Close, SL→BE, and fullscreen exit.
+- The trade info is restored inside the same dock: LONG/SHORT, entry/mark, P&L, and R multiple.
 - The visible V12.5 patch badge stays removed.
 - Current/live candle remains shifted closer to the right side.
 

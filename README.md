@@ -1,25 +1,30 @@
 # CandleRun
 
-## ✅ PLAY LINK THAT SHOULD OPEN AS THE GAME
+## ✅ TAP THIS TO PLAY
 
-The jsDelivr link can show raw HTML code on iPhone, so use this RawGitHack link instead:
+GitHub's **Code** tab shows HTML as code. That is normal. To actually play the game, open one of these web-preview links in Safari:
 
-**Play CandleRun here:**  
-https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/index.html
+### Main play link
 
-## Backup direct game link
+[▶ PLAY CANDLERUN](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/index.html)
 
-https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/CandleRun%20V9%20GOAT%20Trading%20Game%205.html
+### Direct game file backup
 
-## GitHub Pages clean link
+[▶ OPEN DIRECT GAME FILE](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/CandleRun%20V9%20GOAT%20Trading%20Game%205.html)
 
-After GitHub Pages is enabled in **Settings → Pages → Deploy from a branch → main → /(root)**, this cleaner link should work:
+### GitHub Pages clean link
 
-https://segunsnyder6-cell.github.io/Candle-runner-2/
+[▶ OPEN GITHUB PAGES VERSION](https://segunsnyder6-cell.github.io/Candle-runner-2/)
 
-## What happened
+If the GitHub Pages version does not work yet, go to:
 
-The old cdn.jsdelivr.net link may open as plain HTML text on iPhone instead of rendering the app. RawGitHack is made for previewing GitHub HTML files as real webpages, so use the RawGitHack link above for playing and sharing.
+**Settings → Pages → Source: Deploy from a branch → Branch: main → Folder: /(root) → Save**
+
+Then wait about 1 minute and open the GitHub Pages version again.
+
+## Important
+
+Do **not** tap `index.html` from the GitHub file list if you want to play. That opens the code editor/viewer. Use the big play links above.
 
 ## About
 

@@ -2,29 +2,31 @@
 
 ## ✅ TAP THIS TO PLAY
 
-GitHub's **Code** tab shows HTML as code. That is normal. To actually play the game, open one of these web-preview links in Safari:
+GitHub's **Code** tab shows HTML as code. That is normal. To actually play the game, open this Play Now web-preview link in Safari:
 
-### Main play link
+### Main Play Now link — updated version
 
-[▶ PLAY CANDLERUN](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/index.html)
+[▶ PLAY NOW — UPDATED CANDLERUN](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/Play%20Now.html)
+
+This Play Now file includes the newest mobile patch:
+
+- Fullscreen tap fix so SL/TP handles should not steal the tap.
+- Fullscreen button moved away from the crowded right-side SL/TP labels.
+- Current/live candle shifted closer to the right side.
+
+### Backup launcher
+
+[▶ OPEN INDEX LAUNCHER](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/index.html)
 
 ### Direct game file backup
 
 [▶ OPEN DIRECT GAME FILE](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/CandleRun%20V9%20GOAT%20Trading%20Game%205.html)
 
-### GitHub Pages clean link
-
-[▶ OPEN GITHUB PAGES VERSION](https://segunsnyder6-cell.github.io/Candle-runner-2/)
-
-If the GitHub Pages version does not work yet, go to:
-
-**Settings → Pages → Source: Deploy from a branch → Branch: main → Folder: /(root) → Save**
-
-Then wait about 1 minute and open the GitHub Pages version again.
+The direct game file is useful as a fallback, but the Play Now link is the one with the newest launcher patch.
 
 ## Important
 
-Do **not** tap `index.html` from the GitHub file list if you want to play. That opens the code editor/viewer. Use the big play links above.
+Do **not** tap `index.html` or `Play Now.html` from the GitHub file list if you want to play. That opens the code viewer. Use the big play links above.
 
 ## About
 

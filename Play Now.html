@@ -17,13 +17,14 @@
   </style>
 </head>
 <body>
-  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-6-topright-fs-clean" title="CandleRun Game"></iframe>
-  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the updated Play Now build with the top-right fullscreen button restored and the overlap badge removed…</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-6-topright-fs-clean">Open direct file if needed</a><p class="tiny">This page renders the game. GitHub's file list will still show code if you tap the file directly.</p></div></div>
+  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-7-speedfix" title="CandleRun Game"></iframe>
+  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the updated Play Now build with fixed Tape / ¼× timing and the top-right fullscreen button restored…</p><a class="btn" href="Play%20Now.html?v=v12-7-speedfix">Reload patched launcher if needed</a><p class="tiny">This page renders the game. GitHub's file list will still show code if you tap the file directly.</p></div></div>
 <script>
 (function(){
   var frame=document.getElementById('game');
   var boot=document.getElementById('boot');
   var patchedRender=false;
+  var patchedSpeed=false;
   var styleInjected=false;
   var listenerInjected=false;
   function child(){ try{return frame.contentWindow;}catch(e){return null;} }
@@ -41,14 +42,74 @@
     if(btn.parentElement!==host) host.appendChild(btn);
     return true;
   }
+  function patchSpeedEngine(w){
+    if(patchedSpeed) return true;
+    if(!w || typeof w.advanceSelectedVisual!=='function' || typeof w.getCandleDurationMs!=='function' || !w.S) return false;
+    try{
+      w.eval("(function(){\n"+
+"  if(window.__crSpeedFixV127) return;\n"+
+"  window.__crSpeedFixV127=true;\n"+
+"  getCandleDurationMs=function(){\n"+
+"    if(S.speed==='tape') return 20000;\n"+
+"    var n=Number(S.speed)||1;\n"+
+"    return 1000/Math.max(0.05,n);\n"+
+"  };\n"+
+"  __crTimedMicroTickV127=function(v,dPhase){\n"+
+"    var o=v.partial.o, target=v.target, hiCap=v.hiCap, loCap=v.loCap;\n"+
+"    var range=Math.max(hiCap-loCap, Math.abs(o)*1e-6), phase=v.phase;\n"+
+"    var norm=Math.max(0.012, Math.min(0.55, dPhase*84));\n"+
+"    var pull=(target-v.px)*(0.026+phase*0.20)*norm;\n"+
+"    var noiseMag=range*(0.006+0.034*(1-phase*0.62))*Math.sqrt(norm);\n"+
+"    var noise=(Math.random()*2-1)*noiseMag;\n"+
+"    if(Math.random()<0.20) noise*=0.22;\n"+
+"    v.mom=v.mom*(1-0.20*norm)+(pull+noise)*(0.18*norm);\n"+
+"    var step=pull+noise+v.mom*(0.55*norm);\n"+
+"    if(!v.bursting && Math.abs(phase-v.burstPhase)<Math.max(0.006,dPhase*2.4) && Math.random()<0.06*norm){ v.bursting=U.randInt(3,7); }\n"+
+"    if(v.bursting>0){ step+=Math.sign(target-o||1)*noiseMag*U.rand(0.8,1.65); v.bursting--; }\n"+
+"    if(Math.abs(phase-v.pausePhase)<0.04) step*=0.30;\n"+
+"    v.px+=step;\n"+
+"    if(!v.sweptHi && phase>=v.sweepHiAt){ v.px=U.lerp(v.px,hiCap,U.rand(0.36,0.78)); v.sweptHi=true; v.mom*=-0.25; }\n"+
+"    if(!v.sweptLo && phase>=v.sweepLoAt){ v.px=U.lerp(v.px,loCap,U.rand(0.36,0.78)); v.sweptLo=true; v.mom*=-0.25; }\n"+
+"    if(phase>=0.96){ v.px=U.lerp(v.px,target,Math.min(1,(phase-0.96)/0.04)); }\n"+
+"    v.px=U.clamp(v.px,loCap,hiCap);\n"+
+"    if(v.px>v.hi) v.hi=v.px;\n"+
+"    if(v.px<v.lo) v.lo=v.px;\n"+
+"    v.vol=Math.min(v.full.v, Math.max(v.vol, v.full.v*Math.max(0.02,phase)*(0.94+Math.random()*0.08)));\n"+
+"    v.tickCount++;\n"+
+"  };\n"+
+"  advanceSelectedVisual=function(dt){\n"+
+"    var a=asset(S.selectedAsset), perCandle=getCandleDurationMs();\n"+
+"    var remain=dt, made=0, guard=0;\n"+
+"    while(remain>0 && guard<8){\n"+
+"      guard++;\n"+
+"      var v=activeVisual(a.id) || beginVisualCandle(a);\n"+
+"      var left=(1-v.phase)*perCandle, use=Math.min(remain,left);\n"+
+"      var dPhase=use/perCandle;\n"+
+"      v.prevPx=v.px;\n"+
+"      v.phase=Math.min(1, v.phase+dPhase);\n"+
+"      __crTimedMicroTickV127(v,dPhase);\n"+
+"      syncPartial(v);\n"+
+"      if(checkOrderTriggers(v.px)){ return made; }\n"+
+"      remain-=use;\n"+
+"      if(v.phase>=0.9999){ finalizeVisualCandle(v); checkOrderTriggers(currentPrice(a.id)); made++; }\n"+
+"      else { break; }\n"+
+"    }\n"+
+"    return made;\n"+
+"  };\n"+
+"})();");
+      patchedSpeed=true;
+      return true;
+    }catch(e){ return false; }
+  }
   function patchInsideGame(){
     var w=child(), d=childDoc();
     if(!w||!d||!d.body) return false;
+    patchSpeedEngine(w);
     if(!styleInjected && d.head){
       var st=d.createElement('style');
-      st.setAttribute('data-candlerun-mobile-patch','v12.6-topright-fs-clean');
+      st.setAttribute('data-candlerun-mobile-patch','v12.7-speedfix');
       st.textContent=[
-        '/* CandleRun V12.6 launcher patch: keep the good top-right fullscreen button; remove bottom duplicate and patch badge */',
+        '/* CandleRun V12.7 launcher patch: fixed slow-mode timing; keep the good top-right fullscreen button; remove bottom duplicate and patch badge */',
         '.chart-fsbtn{position:absolute!important;top:10px!important;right:10px!important;bottom:auto!important;left:auto!important;z-index:12!important;width:52px!important;height:52px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:20px!important;pointer-events:auto!important;touch-action:manipulation!important;background:linear-gradient(180deg,rgba(9,28,32,.82),rgba(3,10,15,.74))!important;border:1px solid rgba(150,255,220,.34)!important;box-shadow:0 10px 26px rgba(0,0,0,.38),0 0 18px rgba(25,233,140,.10),inset 0 1px 0 rgba(255,255,255,.04)!important;backdrop-filter:blur(10px)!important;}',
         '.chart-fsbtn svg{width:22px!important;height:22px!important;stroke:#d9fff1!important;}',
         '.chart-uxbar .chart-fsbtn{position:absolute!important;top:10px!important;right:10px!important;bottom:auto!important;left:auto!important;}',

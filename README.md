@@ -10,11 +10,11 @@ GitHub's **Code** tab shows HTML as code. That is normal. To actually play the g
 
 This Play Now file now includes the newest launcher patch:
 
-- Single fullscreen button only — no duplicate overlay button.
-- Fullscreen button moved into the bottom chart control area.
-- Chart control text shifted left so the fullscreen button has room.
+- Fullscreen / zoom control is fitted **inside the chart control box** instead of floating over text or candles.
+- The bottom chart controls resize tighter on iPhone so the fullscreen button, reset button, and gesture text do not fight each other.
+- Fullscreen exit control is kept inside the fullscreen bottom dock and sized so it does not cover the dock info.
 - Stronger tap handling so chart/SL/TP layers should not steal the fullscreen tap.
-- Current/live candle shifted closer to the right side.
+- Current/live candle remains shifted closer to the right side.
 
 ### Backup launcher
 

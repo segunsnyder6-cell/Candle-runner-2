@@ -14,24 +14,20 @@
     .card{max-width:430px;border:1px solid rgba(120,255,205,.18);border-radius:26px;background:linear-gradient(160deg,rgba(16,28,39,.96),rgba(7,11,17,.98));padding:26px;box-shadow:0 22px 70px rgba(0,0,0,.55),0 0 40px rgba(25,233,140,.10);text-align:left}
     h1{margin:0;font-size:40px;line-height:.9;font-style:italic} h1 span{color:#19e98c;text-shadow:0 0 20px rgba(25,233,140,.35)}
     p{color:#9aa7ad;line-height:1.45;font-size:14px}.tiny{font-size:12px;color:#6f7d84}.btn{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:12px;padding:14px 18px;border-radius:16px;text-decoration:none;font-weight:900;border:1px solid rgba(120,255,205,.18);background:linear-gradient(180deg,#2bffaa,#10c87a);color:#02150f}
-    #fsTouch{position:fixed;display:none;z-index:999999;width:58px;height:58px;border-radius:18px;border:1px solid rgba(150,255,220,.45);background:linear-gradient(180deg,rgba(8,24,28,.92),rgba(3,10,15,.88));box-shadow:0 10px 26px rgba(0,0,0,.42),0 0 22px rgba(25,233,140,.18);backdrop-filter:blur(12px);align-items:center;justify-content:center;color:#d9fff2;touch-action:manipulation}
-    #fsTouch svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:2;pointer-events:none}
-    #fsTouch:active{transform:scale(.94)}
     #patchBadge{position:fixed;left:10px;bottom:10px;z-index:999998;padding:7px 10px;border-radius:999px;background:rgba(3,10,15,.70);border:1px solid rgba(120,255,205,.16);color:#9aa7ad;font-size:11px;font-weight:800;backdrop-filter:blur(10px);pointer-events:none;opacity:.72}
   </style>
 </head>
 <body>
   <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html" title="CandleRun Game"></iframe>
-  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the playable build with the mobile fullscreen fix and right-shifted live candle patch…</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html">Open direct file if needed</a><p class="tiny">Use this launcher link to play. The GitHub file list shows code; this page renders the game.</p></div></div>
-  <button id="fsTouch" aria-label="Fullscreen chart"><svg viewBox="0 0 24 24"><path d="M8 3H4a1 1 0 0 0-1 1v4"/><path d="M16 3h4a1 1 0 0 1 1 1v4"/><path d="M8 21H4a1 1 0 0 1-1-1v-4"/><path d="M16 21h4a1 1 0 0 0 1-1v-4"/></svg></button>
-  <div id="patchBadge">V12.3 mobile patch active</div>
+  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the playable build with the cleaner single fullscreen button and right-shifted live candle patch…</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html">Open direct file if needed</a><p class="tiny">Use this launcher link to play. The GitHub file list shows code; this page renders the game.</p></div></div>
+  <div id="patchBadge">V12.4 single fullscreen patch active</div>
 <script>
 (function(){
   var frame=document.getElementById('game');
   var boot=document.getElementById('boot');
-  var fsTouch=document.getElementById('fsTouch');
   var patchedRender=false;
   var styleInjected=false;
+  var listenerInjected=false;
   function child(){ try{return frame.contentWindow;}catch(e){return null;} }
   function childDoc(){ var w=child(); try{return w&&w.document;}catch(e){return null;} }
   function patchInsideGame(){
@@ -39,15 +35,36 @@
     if(!w||!d||!d.body) return false;
     if(!styleInjected && d.head){
       var st=d.createElement('style');
-      st.setAttribute('data-candlerun-mobile-patch','v12.3');
+      st.setAttribute('data-candlerun-mobile-patch','v12.4-single-fs');
       st.textContent=[
-        '.chart-fsbtn{right:72px!important;z-index:99999!important;width:50px!important;height:50px!important;border-radius:17px!important;}',
-        '@media(max-width:430px){.chart-fsbtn{right:72px!important;top:12px!important;width:50px!important;height:50px!important;}}',
-        '.chart-fsbtn svg{width:22px!important;height:22px!important;}',
-        '#chart-host .chart-fsbtn,#chart-host [data-ui-control]{pointer-events:auto!important;}'
+        '/* CandleRun V12.4 launcher patch: one reliable fullscreen button, bottom chart control area */',
+        '.chart-fsbtn{top:auto!important;right:8px!important;bottom:8px!important;z-index:99999!important;width:46px!important;height:46px!important;border-radius:15px!important;pointer-events:auto!important;touch-action:manipulation!important;background:linear-gradient(180deg,rgba(8,24,28,.92),rgba(3,10,15,.88))!important;border:1px solid rgba(150,255,220,.34)!important;box-shadow:0 10px 26px rgba(0,0,0,.42),0 0 20px rgba(25,233,140,.16)!important;}',
+        '.chart-fsbtn svg{width:21px!important;height:21px!important;}',
+        '.chart-uxbar{right:62px!important;bottom:8px!important;max-width:calc(100% - 78px)!important;z-index:8!important;}',
+        '.chart-uxbar .gesture{max-width:132px!important;overflow:hidden!important;text-overflow:ellipsis!important;}',
+        '#chart-host .chart-fsbtn,#chart-host [data-ui-control]{pointer-events:auto!important;}',
+        '@media(max-width:430px){.chart-fsbtn{right:8px!important;bottom:8px!important;width:46px!important;height:46px!important;}.chart-uxbar{right:62px!important;bottom:8px!important;}.chart-uxbar .gesture{max-width:96px!important;}}',
+        'body.fs-chart .chart-fsbtn{top:calc(var(--safe-top) + 8px)!important;right:8px!important;bottom:auto!important;}',
+        'body.fs-chart .chart-uxbar{display:none!important;}'
       ].join('\n');
       d.head.appendChild(st);
       styleInjected=true;
+    }
+    if(!listenerInjected){
+      try{
+        d.addEventListener('pointerdown',function(ev){
+          var btn=ev.target&&ev.target.closest&&ev.target.closest('.chart-fsbtn');
+          if(!btn) return;
+          ev.preventDefault();
+          ev.stopPropagation();
+          try{
+            if(typeof w.toggleChartFs==='function') w.toggleChartFs();
+            else if(typeof w.handleAction==='function') w.handleAction('chart-fullscreen',{},btn);
+            if(typeof w.renderChart==='function') setTimeout(function(){try{w.renderChart();}catch(e){}},40);
+          }catch(e){}
+        },true);
+        listenerInjected=true;
+      }catch(e){}
     }
     if(!patchedRender && typeof w.renderChart==='function'){
       try{
@@ -62,36 +79,15 @@
     }
     return true;
   }
-  function syncOverlay(){
-    var w=child(), d=childDoc();
-    if(!w||!d) { fsTouch.style.display='none'; return; }
+  frame.addEventListener('load',function(){
+    setTimeout(function(){boot.classList.add('hide');},500);
     patchInsideGame();
-    var btn=d.querySelector('.chart-fsbtn');
-    if(!btn){ fsTouch.style.display='none'; return; }
-    var r=btn.getBoundingClientRect();
-    var fr=frame.getBoundingClientRect();
-    var visible=r.width>0 && r.height>0 && (fr.top+r.bottom)>0 && (fr.top+r.top)<window.innerHeight && (fr.left+r.right)>0 && (fr.left+r.left)<window.innerWidth;
-    if(!visible){ fsTouch.style.display='none'; return; }
-    fsTouch.style.display='flex';
-    fsTouch.style.left=Math.round(fr.left+r.left-4)+'px';
-    fsTouch.style.top=Math.round(fr.top+r.top-4)+'px';
-    fsTouch.style.width=Math.round(Math.max(56,r.width+8))+'px';
-    fsTouch.style.height=Math.round(Math.max(56,r.height+8))+'px';
-  }
-  function toggleFullscreen(ev){
-    if(ev){ev.preventDefault();ev.stopPropagation();}
-    var w=child(); if(!w) return;
-    try{
-      if(typeof w.toggleChartFs==='function') w.toggleChartFs();
-      else if(typeof w.handleAction==='function') w.handleAction('chart-fullscreen',{},null);
-      if(typeof w.renderChart==='function') setTimeout(function(){try{w.renderChart();}catch(e){}},40);
-    }catch(e){ console.warn(e); }
-    setTimeout(syncOverlay,80); setTimeout(syncOverlay,280);
-  }
-  ['pointerdown','touchstart','click'].forEach(function(t){fsTouch.addEventListener(t,toggleFullscreen,{passive:false});});
-  frame.addEventListener('load',function(){setTimeout(function(){boot.classList.add('hide');},500); patchInsideGame(); syncOverlay();});
-  window.addEventListener('resize',syncOverlay); window.addEventListener('orientationchange',function(){setTimeout(syncOverlay,250);});
-  setInterval(syncOverlay,300);
+    setTimeout(patchInsideGame,150);
+    setTimeout(patchInsideGame,450);
+  });
+  window.addEventListener('resize',patchInsideGame);
+  window.addEventListener('orientationchange',function(){setTimeout(patchInsideGame,250);});
+  setInterval(patchInsideGame,500);
 })();
 </script>
 </body>

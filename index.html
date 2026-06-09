@@ -6,32 +6,93 @@
   <meta name="theme-color" content="#04070b">
   <title>CandleRun — Play</title>
   <style>
-    :root{--bg:#04070b;--card:#081018;--green:#19e98c;--teal:#2fe6c8;--txt:#e9f2ef;--muted:#9aa7ad;--stroke:rgba(120,255,205,.18)}
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-    html,body{margin:0;min-height:100%;background:radial-gradient(90% 55% at 50% 0%,rgba(25,233,140,.14),transparent 58%),var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
-    body{display:grid;place-items:center;padding:22px}
-    .wrap{width:100%;max-width:520px}
-    .card{border:1px solid var(--stroke);border-radius:28px;background:linear-gradient(160deg,rgba(16,28,39,.96),rgba(7,11,17,.98));padding:26px;box-shadow:0 22px 70px rgba(0,0,0,.55),0 0 40px rgba(25,233,140,.10)}
-    h1{margin:0;font-size:42px;letter-spacing:.3px;line-height:.9;font-style:italic} h1 span{color:var(--green);text-shadow:0 0 20px rgba(25,233,140,.35)}
-    .sub{margin:12px 0 20px;color:var(--muted);line-height:1.45;font-size:15px}
-    .btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;margin:10px 0;padding:15px 18px;border-radius:17px;text-decoration:none;font-weight:900;letter-spacing:.2px;border:1px solid var(--stroke)}
-    .primary{background:linear-gradient(180deg,#2bffaa,#10c87a);color:#02150f;box-shadow:0 10px 30px rgba(25,233,140,.25)}
-    .ghost{background:rgba(255,255,255,.045);color:var(--txt)}
-    .tiny{font-size:12px;color:#6f7d84;line-height:1.45;margin-top:15px;text-align:center}
-    .status{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(25,233,140,.28);border-radius:999px;background:rgba(25,233,140,.08);font-size:12px;font-weight:800;color:var(--green);margin-bottom:14px}
-    .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#04070b;color:#e9f2ef;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+    #game{position:fixed;inset:0;width:100%;height:100%;border:0;background:#04070b}
+    #boot{position:fixed;inset:0;display:grid;place-items:center;padding:24px;background:radial-gradient(90% 55% at 50% 0%,rgba(25,233,140,.14),transparent 58%),#04070b;z-index:1;transition:opacity .25s ease}
+    #boot.hide{opacity:0;pointer-events:none}
+    .card{max-width:430px;border:1px solid rgba(120,255,205,.18);border-radius:26px;background:linear-gradient(160deg,rgba(16,28,39,.96),rgba(7,11,17,.98));padding:26px;box-shadow:0 22px 70px rgba(0,0,0,.55),0 0 40px rgba(25,233,140,.10);text-align:left}
+    h1{margin:0;font-size:40px;line-height:.9;font-style:italic} h1 span{color:#19e98c;text-shadow:0 0 20px rgba(25,233,140,.35)}
+    p{color:#9aa7ad;line-height:1.45;font-size:14px}.tiny{font-size:12px;color:#6f7d84}.btn{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:12px;padding:14px 18px;border-radius:16px;text-decoration:none;font-weight:900;border:1px solid rgba(120,255,205,.18);background:linear-gradient(180deg,#2bffaa,#10c87a);color:#02150f}
+    #fsTouch{position:fixed;display:none;z-index:999999;width:58px;height:58px;border-radius:18px;border:1px solid rgba(150,255,220,.45);background:linear-gradient(180deg,rgba(8,24,28,.92),rgba(3,10,15,.88));box-shadow:0 10px 26px rgba(0,0,0,.42),0 0 22px rgba(25,233,140,.18);backdrop-filter:blur(12px);align-items:center;justify-content:center;color:#d9fff2;touch-action:manipulation}
+    #fsTouch svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:2;pointer-events:none}
+    #fsTouch:active{transform:scale(.94)}
+    #patchBadge{position:fixed;left:10px;bottom:10px;z-index:999998;padding:7px 10px;border-radius:999px;background:rgba(3,10,15,.70);border:1px solid rgba(120,255,205,.16);color:#9aa7ad;font-size:11px;font-weight:800;backdrop-filter:blur(10px);pointer-events:none;opacity:.72}
   </style>
 </head>
 <body>
-  <main class="wrap">
-    <section class="card">
-      <div class="status"><i class="dot"></i> GitHub play launcher is live</div>
-      <h1>CANDLE<span>RUN</span></h1>
-      <p class="sub">Tap the big button to open the playable game file directly from this repository. If Safari blocks the automatic open, use the fallback button below.</p>
-      <a class="btn primary" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html">▶ Play CandleRun</a>
-      <a class="btn ghost" href="./CandleRun%20V9%20GOAT%20Trading%20Game%205.html">Open fallback path</a>
-      <p class="tiny">Best on iPhone: open this page in Safari, then rotate/scroll normally. This launcher avoids the ChatGPT file-preview spinner.</p>
-    </section>
-  </main>
+  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html" title="CandleRun Game"></iframe>
+  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the playable build with the mobile fullscreen fix and right-shifted live candle patch…</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html">Open direct file if needed</a><p class="tiny">Use this launcher link to play. The GitHub file list shows code; this page renders the game.</p></div></div>
+  <button id="fsTouch" aria-label="Fullscreen chart"><svg viewBox="0 0 24 24"><path d="M8 3H4a1 1 0 0 0-1 1v4"/><path d="M16 3h4a1 1 0 0 1 1 1v4"/><path d="M8 21H4a1 1 0 0 1-1-1v-4"/><path d="M16 21h4a1 1 0 0 0 1-1v-4"/></svg></button>
+  <div id="patchBadge">V12.3 mobile patch active</div>
+<script>
+(function(){
+  var frame=document.getElementById('game');
+  var boot=document.getElementById('boot');
+  var fsTouch=document.getElementById('fsTouch');
+  var patchedRender=false;
+  var styleInjected=false;
+  function child(){ try{return frame.contentWindow;}catch(e){return null;} }
+  function childDoc(){ var w=child(); try{return w&&w.document;}catch(e){return null;} }
+  function patchInsideGame(){
+    var w=child(), d=childDoc();
+    if(!w||!d||!d.body) return false;
+    if(!styleInjected && d.head){
+      var st=d.createElement('style');
+      st.setAttribute('data-candlerun-mobile-patch','v12.3');
+      st.textContent=[
+        '.chart-fsbtn{right:72px!important;z-index:99999!important;width:50px!important;height:50px!important;border-radius:17px!important;}',
+        '@media(max-width:430px){.chart-fsbtn{right:72px!important;top:12px!important;width:50px!important;height:50px!important;}}',
+        '.chart-fsbtn svg{width:22px!important;height:22px!important;}',
+        '#chart-host .chart-fsbtn,#chart-host [data-ui-control]{pointer-events:auto!important;}'
+      ].join('\n');
+      d.head.appendChild(st);
+      styleInjected=true;
+    }
+    if(!patchedRender && typeof w.renderChart==='function'){
+      try{
+        var src=String(w.renderChart);
+        var next=src.replace(/var\s+futureSlots\s*=\s*[0-9.]+\s*;/,'var futureSlots=2.35;');
+        if(next!==src){
+          w.eval('renderChart = '+next);
+          patchedRender=true;
+          if(typeof w.renderChart==='function') w.renderChart();
+        }
+      }catch(e){}
+    }
+    return true;
+  }
+  function syncOverlay(){
+    var w=child(), d=childDoc();
+    if(!w||!d) { fsTouch.style.display='none'; return; }
+    patchInsideGame();
+    var btn=d.querySelector('.chart-fsbtn');
+    if(!btn){ fsTouch.style.display='none'; return; }
+    var r=btn.getBoundingClientRect();
+    var fr=frame.getBoundingClientRect();
+    var visible=r.width>0 && r.height>0 && (fr.top+r.bottom)>0 && (fr.top+r.top)<window.innerHeight && (fr.left+r.right)>0 && (fr.left+r.left)<window.innerWidth;
+    if(!visible){ fsTouch.style.display='none'; return; }
+    fsTouch.style.display='flex';
+    fsTouch.style.left=Math.round(fr.left+r.left-4)+'px';
+    fsTouch.style.top=Math.round(fr.top+r.top-4)+'px';
+    fsTouch.style.width=Math.round(Math.max(56,r.width+8))+'px';
+    fsTouch.style.height=Math.round(Math.max(56,r.height+8))+'px';
+  }
+  function toggleFullscreen(ev){
+    if(ev){ev.preventDefault();ev.stopPropagation();}
+    var w=child(); if(!w) return;
+    try{
+      if(typeof w.toggleChartFs==='function') w.toggleChartFs();
+      else if(typeof w.handleAction==='function') w.handleAction('chart-fullscreen',{},null);
+      if(typeof w.renderChart==='function') setTimeout(function(){try{w.renderChart();}catch(e){}},40);
+    }catch(e){ console.warn(e); }
+    setTimeout(syncOverlay,80); setTimeout(syncOverlay,280);
+  }
+  ['pointerdown','touchstart','click'].forEach(function(t){fsTouch.addEventListener(t,toggleFullscreen,{passive:false});});
+  frame.addEventListener('load',function(){setTimeout(function(){boot.classList.add('hide');},500); patchInsideGame(); syncOverlay();});
+  window.addEventListener('resize',syncOverlay); window.addEventListener('orientationchange',function(){setTimeout(syncOverlay,250);});
+  setInterval(syncOverlay,300);
+})();
+</script>
 </body>
 </html>

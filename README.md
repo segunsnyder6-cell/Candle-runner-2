@@ -8,10 +8,12 @@ GitHub's **Code** tab shows HTML as code. That is normal. To actually play the g
 
 [▶ PLAY NOW — UPDATED CANDLERUN](https://raw.githack.com/segunsnyder6-cell/Candle-runner-2/main/Play%20Now.html)
 
-This Play Now file includes the newest mobile patch:
+This Play Now file now includes the newest launcher patch:
 
-- Fullscreen tap fix so SL/TP handles should not steal the tap.
-- Fullscreen button moved away from the crowded right-side SL/TP labels.
+- Single fullscreen button only — no duplicate overlay button.
+- Fullscreen button moved into the bottom chart control area.
+- Chart control text shifted left so the fullscreen button has room.
+- Stronger tap handling so chart/SL/TP layers should not steal the fullscreen tap.
 - Current/live candle shifted closer to the right side.
 
 ### Backup launcher
@@ -27,6 +29,8 @@ The direct game file is useful as a fallback, but the Play Now link is the one w
 ## Important
 
 Do **not** tap `index.html` or `Play Now.html` from the GitHub file list if you want to play. That opens the code viewer. Use the big play links above.
+
+If Safari shows the old fullscreen layout, close the tab and reopen the Play Now link. iPhone Safari can cache the old HTML for a little bit.
 
 ## About
 

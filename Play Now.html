@@ -14,119 +14,80 @@
     .card{max-width:430px;border:1px solid rgba(120,255,205,.18);border-radius:26px;background:linear-gradient(160deg,rgba(16,28,39,.96),rgba(7,11,17,.98));padding:26px;box-shadow:0 22px 70px rgba(0,0,0,.55),0 0 40px rgba(25,233,140,.10);text-align:left}
     h1{margin:0;font-size:40px;line-height:.9;font-style:italic} h1 span{color:#19e98c;text-shadow:0 0 20px rgba(25,233,140,.35)}
     p{color:#9aa7ad;line-height:1.45;font-size:14px}.tiny{font-size:12px;color:#6f7d84}.btn{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:12px;padding:14px 18px;border-radius:16px;text-decoration:none;font-weight:900;border:1px solid rgba(120,255,205,.18);background:linear-gradient(180deg,#2bffaa,#10c87a);color:#02150f}
+    #patchBadge{position:fixed;left:10px;bottom:10px;z-index:999998;padding:7px 10px;border-radius:999px;background:rgba(3,10,15,.70);border:1px solid rgba(120,255,205,.16);color:#9aa7ad;font-size:11px;font-weight:800;backdrop-filter:blur(10px);pointer-events:none;opacity:.72}
   </style>
 </head>
 <body>
-  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=single-bottom-sexy-fs-v12-8" title="CandleRun Game"></iframe>
-  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the clean Play Now build. Only the bottom fullscreen button should remain.</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=single-bottom-sexy-fs-v12-8">Open direct file if needed</a><p class="tiny">This page renders the game. GitHub's file list will still show code if you tap the file directly.</p></div></div>
+  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-4-single-fullscreen" title="CandleRun Game"></iframe>
+  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the updated Play Now build with the cleaner single fullscreen button and right-shifted live candle patch…</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-4-single-fullscreen">Open direct file if needed</a><p class="tiny">This page renders the game. GitHub's file list will still show code if you tap the file directly.</p></div></div>
+  <div id="patchBadge">V12.4 single fullscreen patch active</div>
 <script>
 (function(){
   var frame=document.getElementById('game');
   var boot=document.getElementById('boot');
-  var styleInjected=false;
   var patchedRender=false;
-  function child(){try{return frame.contentWindow;}catch(e){return null;}}
-  function childDoc(){var w=child();try{return w&&w.document;}catch(e){return null;}}
-  function allFsButtons(d){
-    var raw=Array.prototype.slice.call(d.querySelectorAll('button[data-act="chart-fullscreen"], .chart-fsbtn'));
-    var out=[];
-    raw.forEach(function(b){ if(out.indexOf(b)===-1) out.push(b); });
-    return out;
-  }
-  function chooseBottomButton(buttons){
-    if(!buttons.length) return null;
-    var best=buttons[0], bestTop=-Infinity;
-    buttons.forEach(function(b){
-      var r=b.getBoundingClientRect();
-      if(r.top>bestTop){bestTop=r.top;best=b;}
-    });
-    return best;
-  }
-  function styleButton(btn,keep){
-    if(!btn) return;
-    if(!keep){
-      btn.style.setProperty('display','none','important');
-      btn.style.setProperty('visibility','hidden','important');
-      btn.style.setProperty('opacity','0','important');
-      btn.style.setProperty('pointer-events','none','important');
-      btn.setAttribute('aria-hidden','true');
-      return;
-    }
-    btn.removeAttribute('aria-hidden');
-    btn.classList.add('cr-sexy-bottom-fs');
-    btn.style.setProperty('display','flex','important');
-    btn.style.setProperty('visibility','visible','important');
-    btn.style.setProperty('opacity','1','important');
-    btn.style.setProperty('position','absolute','important');
-    btn.style.setProperty('top','auto','important');
-    btn.style.setProperty('bottom','48px','important');
-    btn.style.setProperty('right','18px','important');
-    btn.style.setProperty('left','auto','important');
-    btn.style.setProperty('width','42px','important');
-    btn.style.setProperty('height','42px','important');
-    btn.style.setProperty('border-radius','14px','important');
-    btn.style.setProperty('z-index','400','important');
-    btn.style.setProperty('align-items','center','important');
-    btn.style.setProperty('justify-content','center','important');
-    btn.style.setProperty('pointer-events','auto','important');
-    btn.style.setProperty('touch-action','manipulation','important');
-    btn.style.setProperty('background','linear-gradient(145deg,rgba(14,24,33,.94),rgba(5,11,16,.88))','important');
-    btn.style.setProperty('border','1px solid rgba(130,255,220,.34)','important');
-    btn.style.setProperty('backdrop-filter','blur(12px)','important');
-    btn.style.setProperty('box-shadow','inset 0 1px 0 rgba(255,255,255,.08),0 10px 26px rgba(0,0,0,.48),0 0 18px rgba(25,233,140,.16)','important');
-    var svg=btn.querySelector('svg');
-    if(svg){svg.style.setProperty('width','18px','important');svg.style.setProperty('height','18px','important');svg.style.setProperty('stroke','#d8fff3','important');svg.style.setProperty('filter','drop-shadow(0 0 8px rgba(25,233,140,.36))','important');svg.style.setProperty('pointer-events','none','important');}
-  }
-  function wireButton(w,d,btn){
-    if(!btn || btn.__crSexyFsPatched) return;
-    btn.__crSexyFsPatched=true;
-    var block=function(ev){ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();};
-    var run=function(ev){
-      ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
-      try{
-        if(typeof w.toggleChartFs==='function') w.toggleChartFs();
-        else if(typeof w.handleAction==='function') w.handleAction('chart-fullscreen',{},null);
-        setTimeout(function(){try{if(typeof w.renderChart==='function') w.renderChart();}catch(e){} patchButtons(w,d);},40);
-        setTimeout(function(){patchButtons(w,d);},120);
-      }catch(e){}
-    };
-    ['pointerdown','touchstart','mousedown'].forEach(function(type){btn.addEventListener(type,block,true);});
-    btn.addEventListener('click',run,true);
-  }
-  function patchButtons(w,d){
-    var buttons=allFsButtons(d);
-    if(!buttons.length) return;
-    var main=chooseBottomButton(buttons);
-    buttons.forEach(function(b){styleButton(b,b===main);});
-    wireButton(w,d,main);
-  }
+  var styleInjected=false;
+  var listenerInjected=false;
+  function child(){ try{return frame.contentWindow;}catch(e){return null;} }
+  function childDoc(){ var w=child(); try{return w&&w.document;}catch(e){return null;} }
   function patchInsideGame(){
     var w=child(), d=childDoc();
     if(!w||!d||!d.body) return false;
     if(!styleInjected && d.head){
       var st=d.createElement('style');
-      st.setAttribute('data-candlerun-single-bottom-fs','v12.8');
+      st.setAttribute('data-candlerun-mobile-patch','v12.4-single-fs');
       st.textContent=[
-        '#chart-host button[data-act="chart-fullscreen"],#chart-host .chart-fsbtn{position:absolute!important;top:auto!important;bottom:48px!important;right:18px!important;left:auto!important;z-index:400!important;width:42px!important;height:42px!important;border-radius:14px!important;background:linear-gradient(145deg,rgba(14,24,33,.94),rgba(5,11,16,.88))!important;border:1px solid rgba(130,255,220,.34)!important;backdrop-filter:blur(12px)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 10px 26px rgba(0,0,0,.48),0 0 18px rgba(25,233,140,.16)!important;pointer-events:auto!important;touch-action:manipulation!important;}',
-        '#chart-host button[data-act="chart-fullscreen"] svg,#chart-host .chart-fsbtn svg{width:18px!important;height:18px!important;stroke:#d8fff3!important;filter:drop-shadow(0 0 8px rgba(25,233,140,.36))!important;pointer-events:none!important;}'
+        '/* CandleRun V12.4 launcher patch: one reliable fullscreen button, bottom chart control area */',
+        '.chart-fsbtn{top:auto!important;right:8px!important;bottom:8px!important;z-index:99999!important;width:46px!important;height:46px!important;border-radius:15px!important;pointer-events:auto!important;touch-action:manipulation!important;background:linear-gradient(180deg,rgba(8,24,28,.92),rgba(3,10,15,.88))!important;border:1px solid rgba(150,255,220,.34)!important;box-shadow:0 10px 26px rgba(0,0,0,.42),0 0 20px rgba(25,233,140,.16)!important;}',
+        '.chart-fsbtn svg{width:21px!important;height:21px!important;}',
+        '.chart-uxbar{right:62px!important;bottom:8px!important;max-width:calc(100% - 78px)!important;z-index:8!important;}',
+        '.chart-uxbar .gesture{max-width:132px!important;overflow:hidden!important;text-overflow:ellipsis!important;}',
+        '#chart-host .chart-fsbtn,#chart-host [data-ui-control]{pointer-events:auto!important;}',
+        '@media(max-width:430px){.chart-fsbtn{right:8px!important;bottom:8px!important;width:46px!important;height:46px!important;}.chart-uxbar{right:62px!important;bottom:8px!important;}.chart-uxbar .gesture{max-width:96px!important;}}',
+        'body.fs-chart .chart-fsbtn{top:calc(var(--safe-top) + 8px)!important;right:8px!important;bottom:auto!important;}',
+        'body.fs-chart .chart-uxbar{display:none!important;}'
       ].join('\n');
       d.head.appendChild(st);
       styleInjected=true;
+    }
+    if(!listenerInjected){
+      try{
+        d.addEventListener('pointerdown',function(ev){
+          var btn=ev.target&&ev.target.closest&&ev.target.closest('.chart-fsbtn');
+          if(!btn) return;
+          ev.preventDefault();
+          ev.stopPropagation();
+          try{
+            if(typeof w.toggleChartFs==='function') w.toggleChartFs();
+            else if(typeof w.handleAction==='function') w.handleAction('chart-fullscreen',{},btn);
+            if(typeof w.renderChart==='function') setTimeout(function(){try{w.renderChart();}catch(e){}},40);
+          }catch(e){}
+        },true);
+        listenerInjected=true;
+      }catch(e){}
     }
     if(!patchedRender && typeof w.renderChart==='function'){
       try{
         var src=String(w.renderChart);
         var next=src.replace(/var\s+futureSlots\s*=\s*[0-9.]+\s*;/,'var futureSlots=2.35;');
-        if(next!==src){w.eval('renderChart = '+next);patchedRender=true;if(typeof w.renderChart==='function')w.renderChart();}
+        if(next!==src){
+          w.eval('renderChart = '+next);
+          patchedRender=true;
+          if(typeof w.renderChart==='function') w.renderChart();
+        }
       }catch(e){}
     }
-    patchButtons(w,d);
     return true;
   }
-  frame.addEventListener('load',function(){setTimeout(function(){boot.classList.add('hide');},450);patchInsideGame();});
+  frame.addEventListener('load',function(){
+    setTimeout(function(){boot.classList.add('hide');},500);
+    patchInsideGame();
+    setTimeout(patchInsideGame,150);
+    setTimeout(patchInsideGame,450);
+  });
   window.addEventListener('resize',patchInsideGame);
   window.addEventListener('orientationchange',function(){setTimeout(patchInsideGame,250);});
-  setInterval(patchInsideGame,100);
+  setInterval(patchInsideGame,500);
 })();
 </script>
 </body>

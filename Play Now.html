@@ -17,8 +17,8 @@
   </style>
 </head>
 <body>
-  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=clean-fs-bottom-right-v12-5" title="CandleRun Game"></iframe>
-  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the clean Play Now build. Fullscreen is the original small button, moved to the bottom-right of the chart.</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=clean-fs-bottom-right-v12-5">Open direct file if needed</a><p class="tiny">This page renders the game. GitHub's file list will still show code if you tap the file directly.</p></div></div>
+  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=fs-upper-right-v12-6" title="CandleRun Game"></iframe>
+  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the clean Play Now build. Fullscreen/zoom-out is moved to the upper-right chart area you marked.</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=fs-upper-right-v12-6">Open direct file if needed</a><p class="tiny">This page renders the game. GitHub's file list will still show code if you tap the file directly.</p></div></div>
 <script>
 (function(){
   var frame=document.getElementById('game');
@@ -28,13 +28,19 @@
   function child(){try{return frame.contentWindow;}catch(e){return null;}}
   function childDoc(){var w=child();try{return w&&w.document;}catch(e){return null;}}
   function findFsButton(d){return d.querySelector('button[data-act="chart-fullscreen"]')||d.querySelector('.chart-fsbtn');}
-  function forceButtonPosition(btn){
+  function desiredFsPosition(w){
+    var isFs=false;
+    try{isFs=!!(w.document&&w.document.body&&w.document.body.classList.contains('fs-chart'));}catch(e){}
+    return isFs ? {top:'72px',right:'98px',bottom:'auto'} : {top:'auto',right:'14px',bottom:'78px'};
+  }
+  function forceButtonPosition(w,btn){
     if(!btn) return;
-    btn.classList.add('cr-bottom-fs');
+    var pos=desiredFsPosition(w);
+    btn.classList.add('cr-clean-fs');
     btn.style.setProperty('position','absolute','important');
-    btn.style.setProperty('top','auto','important');
-    btn.style.setProperty('bottom','78px','important');
-    btn.style.setProperty('right','14px','important');
+    btn.style.setProperty('top',pos.top,'important');
+    btn.style.setProperty('bottom',pos.bottom,'important');
+    btn.style.setProperty('right',pos.right,'important');
     btn.style.setProperty('left','auto','important');
     btn.style.setProperty('width','32px','important');
     btn.style.setProperty('height','32px','important');
@@ -52,9 +58,9 @@
   function patchButton(w,d){
     var btn=findFsButton(d);
     if(!btn) return;
-    forceButtonPosition(btn);
-    if(btn.__crBottomFsPatched) return;
-    btn.__crBottomFsPatched=true;
+    forceButtonPosition(w,btn);
+    if(btn.__crCleanFsPatched) return;
+    btn.__crCleanFsPatched=true;
     var block=function(ev){ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();};
     var run=function(ev){
       ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
@@ -62,6 +68,7 @@
         if(typeof w.toggleChartFs==='function') w.toggleChartFs();
         else if(typeof w.handleAction==='function') w.handleAction('chart-fullscreen',{},null);
         setTimeout(function(){try{if(typeof w.renderChart==='function') w.renderChart();}catch(e){}},40);
+        setTimeout(function(){try{forceButtonPosition(w,findFsButton(d));}catch(e){}},70);
       }catch(e){}
     };
     ['pointerdown','touchstart','mousedown'].forEach(function(type){btn.addEventListener(type,block,true);});
@@ -72,11 +79,13 @@
     if(!w||!d||!d.body) return false;
     if(!styleInjected && d.head){
       var st=d.createElement('style');
-      st.setAttribute('data-candlerun-bottom-fs','v12.5');
+      st.setAttribute('data-candlerun-fs-upper-right','v12.6');
       st.textContent=[
-        '#chart-host button[data-act="chart-fullscreen"],#chart-host .chart-fsbtn{position:absolute!important;top:auto!important;bottom:78px!important;right:14px!important;left:auto!important;z-index:250!important;width:32px!important;height:32px!important;border-radius:10px!important;background:rgba(8,14,18,.72)!important;border:1px solid rgba(191,238,222,.32)!important;backdrop-filter:blur(9px)!important;box-shadow:0 6px 16px rgba(0,0,0,.34),0 0 12px rgba(25,233,140,.08)!important;pointer-events:auto!important;touch-action:manipulation!important;}',
+        '#chart-host button[data-act="chart-fullscreen"],#chart-host .chart-fsbtn{position:absolute!important;z-index:250!important;width:32px!important;height:32px!important;border-radius:10px!important;background:rgba(8,14,18,.72)!important;border:1px solid rgba(191,238,222,.32)!important;backdrop-filter:blur(9px)!important;box-shadow:0 6px 16px rgba(0,0,0,.34),0 0 12px rgba(25,233,140,.08)!important;pointer-events:auto!important;touch-action:manipulation!important;}',
+        'body:not(.fs-chart) #chart-host button[data-act="chart-fullscreen"],body:not(.fs-chart) #chart-host .chart-fsbtn{top:auto!important;bottom:78px!important;right:14px!important;left:auto!important;}',
+        'body.fs-chart #chart-host button[data-act="chart-fullscreen"],body.fs-chart #chart-host .chart-fsbtn{top:72px!important;bottom:auto!important;right:98px!important;left:auto!important;}',
         '#chart-host button[data-act="chart-fullscreen"] svg,#chart-host .chart-fsbtn svg{width:16px!important;height:16px!important;stroke:#bfeede!important;pointer-events:none!important;}',
-        '@media(max-width:430px){#chart-host button[data-act="chart-fullscreen"],#chart-host .chart-fsbtn{top:auto!important;bottom:78px!important;right:14px!important;width:32px!important;height:32px!important;border-radius:10px!important;}}'
+        '@media(max-width:430px){body.fs-chart #chart-host button[data-act="chart-fullscreen"],body.fs-chart #chart-host .chart-fsbtn{top:72px!important;right:98px!important;}body:not(.fs-chart) #chart-host button[data-act="chart-fullscreen"],body:not(.fs-chart) #chart-host .chart-fsbtn{bottom:78px!important;right:14px!important;}}'
       ].join('\n');
       d.head.appendChild(st);
       styleInjected=true;

@@ -20,8 +20,8 @@
   </style>
 </head>
 <body>
-  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?layout=fs-bottom-right-v14" title="CandleRun Game"></iframe>
-  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading V14: fullscreen enter button in the bottom-right chart controls; fullscreen exit button in the old SL→BE slot; SL→BE moved left beside Close.</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?layout=fs-bottom-right-v14">Open direct file if needed</a><p class="tiny">Fresh file path to bypass cached launcher layouts.</p></div></div>
+  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?layout=fs-info-dock-v15" title="CandleRun Game"></iframe>
+  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading V15: fullscreen dock keeps trade info plus three equal buttons: Close, SL→BE, and fullscreen exit.</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?layout=fs-info-dock-v15">Open direct file if needed</a><p class="tiny">Fresh cache-busted layout with trade info restored in the dock.</p></div></div>
 <script>
 (function(){
   var frame=document.getElementById('game');
@@ -55,9 +55,9 @@
     if(!w||!d||!d.body) return false;
     if(!styleInjected && d.head){
       var st=d.createElement('style');
-      st.setAttribute('data-candlerun-layout-patch','fs-bottom-right-v14');
+      st.setAttribute('data-candlerun-layout-patch','fs-info-dock-v15');
       st.textContent=[
-        '/* V14: normal enter fullscreen in bottom-right chart controls; fullscreen exit replaces SL-BE right slot; SL-BE moves left beside Close */',
+        '/* V15: normal enter fullscreen in bottom-right chart controls; fullscreen dock restores old trade info and keeps 3 equal action buttons */',
         '#patchBadge,[data-candlerun-patch-badge],.patchBadge,.patch-badge{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;}',
         '.chart-uxbar{right:10px!important;bottom:8px!important;max-width:calc(100% - 20px)!important;z-index:12!important;display:flex!important;align-items:center!important;gap:7px!important;padding:5px 7px!important;border-radius:14px!important;}',
         '.chart-uxbar .gesture{min-width:0!important;max-width:150px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}',
@@ -67,14 +67,17 @@
         '#chart-host > .chart-fsbtn:not([data-in-uxbar="true"]){right:10px!important;bottom:8px!important;top:auto!important;left:auto!important;width:42px!important;height:42px!important;border-radius:15px!important;z-index:12!important;}',
         'body.fs-chart .chart-uxbar{display:none!important;}',
         'body.fs-chart #chart-host > .chart-fsbtn{display:none!important;visibility:hidden!important;pointer-events:none!important;}',
-        'body.fs-chart .fs-dock{left:8px!important;right:8px!important;bottom:calc(var(--safe-bot) + 8px)!important;z-index:40!important;display:grid!important;grid-template-columns:112px minmax(94px,1fr) 128px!important;grid-template-areas:"close be exit" "info info info"!important;align-items:center!important;gap:8px!important;padding:9px 10px!important;border-radius:18px!important;}',
-        'body.fs-chart .fs-dock .cd-dir, body.fs-chart .fs-dock .fd-mk, body.fs-chart .fs-dock #fcd-pnl, body.fs-chart .fs-dock #fcd-r{display:none!important;}',
-        'body.fs-chart .fs-dock .close{grid-area:close!important;width:100%!important;min-height:50px!important;margin:0!important;border-radius:14px!important;font-size:14px!important;}',
-        'body.fs-chart .fs-dock .be{grid-area:be!important;width:100%!important;min-height:50px!important;margin:0!important;border-radius:14px!important;font-size:13px!important;justify-self:stretch!important;}',
+        'body.fs-chart .fs-dock{left:8px!important;right:8px!important;bottom:calc(var(--safe-bot) + 8px)!important;z-index:40!important;display:grid!important;grid-template-columns:repeat(6,1fr)!important;grid-template-areas:"dir dir mark mark pnl r" "close close be be exit exit" "info info info info info info"!important;align-items:center!important;gap:7px!important;padding:9px 10px!important;border-radius:18px!important;background:rgba(4,10,15,.86)!important;border:1px solid rgba(150,255,220,.16)!important;box-shadow:0 10px 28px rgba(0,0,0,.42)!important;}',
+        'body.fs-chart .fs-dock .cd-dir{grid-area:dir!important;display:flex!important;align-items:center!important;justify-content:center!important;min-height:28px!important;border-radius:999px!important;font-size:10px!important;font-weight:900!important;letter-spacing:.5px!important;white-space:nowrap!important;}',
+        'body.fs-chart .fs-dock .fd-mk{grid-area:mark!important;display:block!important;text-align:center!important;min-width:0!important;font-size:11px!important;font-weight:800!important;color:rgba(207,224,230,.70)!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}',
+        'body.fs-chart .fs-dock #fcd-pnl{grid-area:pnl!important;display:block!important;text-align:right!important;min-width:0!important;font-size:15px!important;font-weight:950!important;font-family:ui-monospace,monospace!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}',
+        'body.fs-chart .fs-dock #fcd-r{grid-area:r!important;display:block!important;text-align:left!important;min-width:0!important;font-size:11px!important;font-weight:900!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;opacity:.95!important;}',
+        'body.fs-chart .fs-dock .close{grid-area:close!important;width:100%!important;min-height:50px!important;margin:0!important;border-radius:14px!important;font-size:15px!important;}',
+        'body.fs-chart .fs-dock .be{grid-area:be!important;width:100%!important;min-height:50px!important;margin:0!important;border-radius:14px!important;font-size:14px!important;justify-self:stretch!important;}',
         'body.fs-chart .fs-dock .fsx{grid-area:exit!important;display:flex!important;visibility:visible!important;pointer-events:auto!important;width:100%!important;min-height:50px!important;margin:0!important;padding:0 12px!important;align-items:center!important;justify-content:center!important;border-radius:16px!important;color:#d9fff1!important;background:linear-gradient(180deg,rgba(9,28,32,.90),rgba(3,10,15,.82))!important;border:1px solid rgba(150,255,220,.34)!important;box-shadow:0 7px 18px rgba(0,0,0,.34),0 0 14px rgba(25,233,140,.10)!important;}',
         'body.fs-chart .fs-dock .fsx svg{width:22px!important;height:22px!important;stroke:currentColor!important;}',
-        'body.fs-chart .fsd-info{grid-area:info!important;max-width:100%!important;min-width:0!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:10px!important;color:rgba(207,224,230,.68)!important;}',
-        '@media(max-width:430px){.chart-uxbar{right:8px!important;bottom:8px!important;gap:5px!important;padding:4px 5px!important;}.chart-uxbar .gesture{max-width:76px!important;font-size:7.6px!important;}.chart-uxbar .chart-reset{font-size:8.8px!important;padding:7px 8px!important;}.chart-uxbar .chart-fsbtn{flex-basis:38px!important;width:38px!important;height:38px!important;border-radius:14px!important;}.chart-uxbar .chart-fsbtn svg{width:18px!important;height:18px!important;}body.fs-chart .fs-dock{grid-template-columns:110px minmax(90px,1fr) 126px!important;bottom:calc(var(--safe-bot) + 7px)!important;padding:8px 9px!important;gap:7px!important;}body.fs-chart .fs-dock .close,body.fs-chart .fs-dock .be,body.fs-chart .fs-dock .fsx{min-height:48px!important;}}'
+        'body.fs-chart .fsd-info{grid-area:info!important;max-width:100%!important;min-width:0!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;font-size:10px!important;color:rgba(207,224,230,.58)!important;}',
+        '@media(max-width:430px){.chart-uxbar{right:8px!important;bottom:8px!important;gap:5px!important;padding:4px 5px!important;}.chart-uxbar .gesture{max-width:76px!important;font-size:7.6px!important;}.chart-uxbar .chart-reset{font-size:8.8px!important;padding:7px 8px!important;}.chart-uxbar .chart-fsbtn{flex-basis:38px!important;width:38px!important;height:38px!important;border-radius:14px!important;}.chart-uxbar .chart-fsbtn svg{width:18px!important;height:18px!important;}body.fs-chart .fs-dock{bottom:calc(var(--safe-bot) + 7px)!important;padding:8px 9px!important;gap:6px!important;}body.fs-chart .fs-dock .cd-dir{font-size:9.5px!important;}body.fs-chart .fs-dock .fd-mk{font-size:10px!important;}body.fs-chart .fs-dock #fcd-pnl{font-size:13.5px!important;}body.fs-chart .fs-dock #fcd-r{font-size:10px!important;}body.fs-chart .fs-dock .close,body.fs-chart .fs-dock .be,body.fs-chart .fs-dock .fsx{min-height:48px!important;}}'
       ].join('\n');
       d.head.appendChild(st);
       styleInjected=true;

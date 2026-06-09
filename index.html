@@ -2,22 +2,36 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#04070b">
-  <title>CandleRun</title>
-  <meta http-equiv="refresh" content="0; url=CandleRun%20V9%20GOAT%20Trading%20Game%205.html">
+  <title>CandleRun — Play</title>
   <style>
-    html,body{margin:0;height:100%;background:#04070b;color:#e9f2ef;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:grid;place-items:center;text-align:center;padding:24px;box-sizing:border-box}
-    .card{max-width:420px;border:1px solid rgba(120,255,205,.18);border-radius:22px;background:linear-gradient(160deg,#101c27,#070b11);padding:28px;box-shadow:0 0 40px rgba(25,233,140,.12)}
-    h1{margin:0 0 8px;font-size:32px;letter-spacing:.5px} span{color:#19e98c} p{color:#9aa7ad;line-height:1.45} a{display:inline-block;margin-top:12px;color:#04140d;background:linear-gradient(180deg,#28f7a2,#10c87a);padding:13px 18px;border-radius:14px;text-decoration:none;font-weight:900}
+    :root{--bg:#04070b;--card:#081018;--green:#19e98c;--teal:#2fe6c8;--txt:#e9f2ef;--muted:#9aa7ad;--stroke:rgba(120,255,205,.18)}
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html,body{margin:0;min-height:100%;background:radial-gradient(90% 55% at 50% 0%,rgba(25,233,140,.14),transparent 58%),var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif}
+    body{display:grid;place-items:center;padding:22px}
+    .wrap{width:100%;max-width:520px}
+    .card{border:1px solid var(--stroke);border-radius:28px;background:linear-gradient(160deg,rgba(16,28,39,.96),rgba(7,11,17,.98));padding:26px;box-shadow:0 22px 70px rgba(0,0,0,.55),0 0 40px rgba(25,233,140,.10)}
+    h1{margin:0;font-size:42px;letter-spacing:.3px;line-height:.9;font-style:italic} h1 span{color:var(--green);text-shadow:0 0 20px rgba(25,233,140,.35)}
+    .sub{margin:12px 0 20px;color:var(--muted);line-height:1.45;font-size:15px}
+    .btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;margin:10px 0;padding:15px 18px;border-radius:17px;text-decoration:none;font-weight:900;letter-spacing:.2px;border:1px solid var(--stroke)}
+    .primary{background:linear-gradient(180deg,#2bffaa,#10c87a);color:#02150f;box-shadow:0 10px 30px rgba(25,233,140,.25)}
+    .ghost{background:rgba(255,255,255,.045);color:var(--txt)}
+    .tiny{font-size:12px;color:#6f7d84;line-height:1.45;margin-top:15px;text-align:center}
+    .status{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(25,233,140,.28);border-radius:999px;background:rgba(25,233,140,.08);font-size:12px;font-weight:800;color:var(--green);margin-bottom:14px}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>CANDLE<span>RUN</span></h1>
-    <p>Loading the newest CandleRun build…</p>
-    <a href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html">Tap here if it does not open</a>
-  </div>
-  <script>location.replace('CandleRun%20V9%20GOAT%20Trading%20Game%205.html');</script>
+  <main class="wrap">
+    <section class="card">
+      <div class="status"><i class="dot"></i> GitHub play launcher is live</div>
+      <h1>CANDLE<span>RUN</span></h1>
+      <p class="sub">Tap the big button to open the playable game file directly from this repository. If Safari blocks the automatic open, use the fallback button below.</p>
+      <a class="btn primary" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html">▶ Play CandleRun</a>
+      <a class="btn ghost" href="./CandleRun%20V9%20GOAT%20Trading%20Game%205.html">Open fallback path</a>
+      <p class="tiny">Best on iPhone: open this page in Safari, then rotate/scroll normally. This launcher avoids the ChatGPT file-preview spinner.</p>
+    </section>
+  </main>
 </body>
 </html>

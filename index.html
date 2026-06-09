@@ -14,13 +14,11 @@
     .card{max-width:430px;border:1px solid rgba(120,255,205,.18);border-radius:26px;background:linear-gradient(160deg,rgba(16,28,39,.96),rgba(7,11,17,.98));padding:26px;box-shadow:0 22px 70px rgba(0,0,0,.55),0 0 40px rgba(25,233,140,.10);text-align:left}
     h1{margin:0;font-size:40px;line-height:.9;font-style:italic} h1 span{color:#19e98c;text-shadow:0 0 20px rgba(25,233,140,.35)}
     p{color:#9aa7ad;line-height:1.45;font-size:14px}.tiny{font-size:12px;color:#6f7d84}.btn{display:flex;align-items:center;justify-content:center;min-height:52px;margin-top:12px;padding:14px 18px;border-radius:16px;text-decoration:none;font-weight:900;border:1px solid rgba(120,255,205,.18);background:linear-gradient(180deg,#2bffaa,#10c87a);color:#02150f}
-    #patchBadge{position:fixed;left:10px;bottom:10px;z-index:999998;padding:7px 10px;border-radius:999px;background:rgba(3,10,15,.70);border:1px solid rgba(120,255,205,.16);color:#9aa7ad;font-size:11px;font-weight:800;backdrop-filter:blur(10px);pointer-events:none;opacity:.72}
   </style>
 </head>
 <body>
-  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-5-fs-control-box" title="CandleRun Game"></iframe>
-  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the playable build with the fullscreen control fitted into the chart controls box…</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-5-fs-control-box">Open direct file if needed</a><p class="tiny">Use this launcher link to play. The GitHub file list shows code; this page renders the game.</p></div></div>
-  <div id="patchBadge">V12.5 fullscreen control patch active</div>
+  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-6-topright-fs-clean" title="CandleRun Game"></iframe>
+  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the playable build with the top-right fullscreen button restored and the overlap badge removed…</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=v12-6-topright-fs-clean">Open direct file if needed</a><p class="tiny">Use this launcher link to play. The GitHub file list shows code; this page renders the game.</p></div></div>
 <script>
 (function(){
   var frame=document.getElementById('game');
@@ -30,17 +28,17 @@
   var listenerInjected=false;
   function child(){ try{return frame.contentWindow;}catch(e){return null;} }
   function childDoc(){ var w=child(); try{return w&&w.document;}catch(e){return null;} }
-  function placeFullscreenButton(){
+  function restoreTopRightFullscreenButton(){
     var d=childDoc();
     if(!d||!d.body) return false;
     var host=d.querySelector('#chart-host');
-    var bar=d.querySelector('.chart-uxbar');
-    var btn=(host&&host.querySelector(':scope > .chart-fsbtn')) || (bar&&bar.querySelector('.chart-fsbtn'));
-    if(!host||!bar||!btn) return false;
-    btn.setAttribute('data-in-uxbar','true');
+    if(!host) return false;
+    var btn=host.querySelector('.chart-fsbtn');
+    if(!btn) return false;
+    btn.removeAttribute('data-in-uxbar');
     btn.setAttribute('title','Fullscreen chart');
     btn.setAttribute('aria-label', d.body.classList.contains('fs-chart')?'Exit fullscreen chart':'Fullscreen chart');
-    if(btn.parentElement!==bar) bar.appendChild(btn);
+    if(btn.parentElement!==host) host.appendChild(btn);
     return true;
   }
   function patchInsideGame(){
@@ -48,28 +46,24 @@
     if(!w||!d||!d.body) return false;
     if(!styleInjected && d.head){
       var st=d.createElement('style');
-      st.setAttribute('data-candlerun-mobile-patch','v12.5-fs-control-box');
+      st.setAttribute('data-candlerun-mobile-patch','v12.6-topright-fs-clean');
       st.textContent=[
-        '/* CandleRun V12.5 launcher patch: fullscreen control lives inside chart controls box, never floating over candles/text */',
-        '.chart-uxbar{right:10px!important;bottom:8px!important;max-width:calc(100% - 20px)!important;z-index:8!important;display:flex!important;align-items:center!important;gap:6px!important;padding:5px 6px!important;}',
-        '.chart-uxbar .gesture{min-width:0!important;max-width:128px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;}',
-        '.chart-uxbar .chart-reset{flex:0 0 auto!important;padding:6px 8px!important;}',
-        '.chart-uxbar .chart-fsbtn{position:static!important;inset:auto!important;flex:0 0 34px!important;width:34px!important;height:34px!important;margin:0!important;border-radius:11px!important;pointer-events:auto!important;touch-action:manipulation!important;background:linear-gradient(180deg,rgba(8,24,28,.92),rgba(3,10,15,.88))!important;border:1px solid rgba(150,255,220,.30)!important;box-shadow:0 6px 16px rgba(0,0,0,.34),0 0 16px rgba(25,233,140,.10)!important;}',
-        '.chart-uxbar .chart-fsbtn svg{width:17px!important;height:17px!important;}',
-        '#chart-host > .chart-fsbtn:not([data-in-uxbar="true"]){right:10px!important;bottom:8px!important;top:auto!important;width:36px!important;height:36px!important;z-index:7!important;}',
-        '#chart-host .chart-fsbtn,#chart-host [data-ui-control],.chart-uxbar .chart-reset{pointer-events:auto!important;}',
+        '/* CandleRun V12.6 launcher patch: keep the good top-right fullscreen button; remove bottom duplicate and patch badge */',
+        '.chart-fsbtn{position:absolute!important;top:10px!important;right:10px!important;bottom:auto!important;left:auto!important;z-index:12!important;width:52px!important;height:52px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:20px!important;pointer-events:auto!important;touch-action:manipulation!important;background:linear-gradient(180deg,rgba(9,28,32,.82),rgba(3,10,15,.74))!important;border:1px solid rgba(150,255,220,.34)!important;box-shadow:0 10px 26px rgba(0,0,0,.38),0 0 18px rgba(25,233,140,.10),inset 0 1px 0 rgba(255,255,255,.04)!important;backdrop-filter:blur(10px)!important;}',
+        '.chart-fsbtn svg{width:22px!important;height:22px!important;stroke:#d9fff1!important;}',
+        '.chart-uxbar .chart-fsbtn{position:absolute!important;top:10px!important;right:10px!important;bottom:auto!important;left:auto!important;}',
+        'body.fs-chart .chart-fsbtn{top:calc(var(--safe-top) + 10px)!important;right:10px!important;}',
         'body.fs-chart .chart-uxbar{display:none!important;}',
-        'body.fs-chart .chart-uxbar .chart-fsbtn{display:none!important;}',
+        '.fs-dock .fsx, body.fs-chart .fs-dock .fsx{display:none!important;}',
         'body.fs-chart .fs-dock{left:8px!important;right:8px!important;bottom:calc(var(--safe-bot) + 8px)!important;display:flex!important;align-items:center!important;gap:7px!important;padding:8px 9px!important;}',
-        'body.fs-chart .fs-dock .fsx{position:static!important;flex:0 0 44px!important;min-width:44px!important;height:42px!important;margin-left:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;border-radius:12px!important;}',
-        'body.fs-chart .fs-dock .fsx svg{width:17px!important;height:17px!important;}',
-        'body.fs-chart .fsd-info{flex:1 1 calc(100% - 58px)!important;min-width:0!important;max-width:calc(100% - 58px)!important;text-align:left!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}',
-        '@media(max-width:430px){.chart-uxbar{right:8px!important;bottom:8px!important;gap:5px!important;padding:4px 5px!important;}.chart-uxbar .gesture{max-width:70px!important;font-size:7.7px!important;}.chart-uxbar .chart-reset{font-size:8.8px!important;padding:6px 7px!important;}.chart-uxbar .chart-fsbtn{width:32px!important;height:32px!important;flex-basis:32px!important;border-radius:10px!important;}body.fs-chart .fs-dock{bottom:calc(var(--safe-bot) + 7px)!important;}}'
+        'body.fs-chart .fsd-info{flex-basis:100%!important;max-width:100%!important;text-align:center!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;}',
+        '#patchBadge{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important;}',
+        '@media(max-width:430px){.chart-fsbtn{top:9px!important;right:9px!important;width:50px!important;height:50px!important;border-radius:19px!important;}.chart-fsbtn svg{width:21px!important;height:21px!important;}body.fs-chart .chart-fsbtn{top:calc(var(--safe-top) + 9px)!important;right:9px!important;}body.fs-chart .fs-dock{bottom:calc(var(--safe-bot) + 7px)!important;}}'
       ].join('\n');
       d.head.appendChild(st);
       styleInjected=true;
     }
-    placeFullscreenButton();
+    restoreTopRightFullscreenButton();
     if(!listenerInjected){
       try{
         d.addEventListener('pointerdown',function(ev){
@@ -80,8 +74,8 @@
           try{
             if(typeof w.toggleChartFs==='function') w.toggleChartFs();
             else if(typeof w.handleAction==='function') w.handleAction('chart-fullscreen',{},btn);
-            setTimeout(placeFullscreenButton,20);
-            if(typeof w.renderChart==='function') setTimeout(function(){try{w.renderChart();placeFullscreenButton();}catch(e){}},45);
+            setTimeout(restoreTopRightFullscreenButton,20);
+            if(typeof w.renderChart==='function') setTimeout(function(){try{w.renderChart();restoreTopRightFullscreenButton();}catch(e){}},45);
           }catch(e){}
         },true);
         listenerInjected=true;
@@ -98,7 +92,7 @@
         }
       }catch(e){}
     }
-    placeFullscreenButton();
+    restoreTopRightFullscreenButton();
     return true;
   }
   frame.addEventListener('load',function(){

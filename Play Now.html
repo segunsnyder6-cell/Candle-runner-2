@@ -17,8 +17,8 @@
   </style>
 </head>
 <body>
-  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html" title="CandleRun Game"></iframe>
-  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the clean Play Now build. The original fullscreen button has been moved to the lower-right of the chart so TP/SL should not steal the tap.</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html">Open direct file if needed</a><p class="tiny">This page renders the game. GitHub's file list will still show code if you tap the file directly.</p></div></div>
+  <iframe id="game" src="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=clean-fs-bottom-right-v12-5" title="CandleRun Game"></iframe>
+  <div id="boot"><div class="card"><h1>CANDLE<span>RUN</span></h1><p>Loading the clean Play Now build. Fullscreen is the original small button, moved to the bottom-right of the chart.</p><a class="btn" href="CandleRun%20V9%20GOAT%20Trading%20Game%205.html?v=clean-fs-bottom-right-v12-5">Open direct file if needed</a><p class="tiny">This page renders the game. GitHub's file list will still show code if you tap the file directly.</p></div></div>
 <script>
 (function(){
   var frame=document.getElementById('game');
@@ -27,10 +27,34 @@
   var patchedRender=false;
   function child(){try{return frame.contentWindow;}catch(e){return null;}}
   function childDoc(){var w=child();try{return w&&w.document;}catch(e){return null;}}
+  function findFsButton(d){return d.querySelector('button[data-act="chart-fullscreen"]')||d.querySelector('.chart-fsbtn');}
+  function forceButtonPosition(btn){
+    if(!btn) return;
+    btn.classList.add('cr-bottom-fs');
+    btn.style.setProperty('position','absolute','important');
+    btn.style.setProperty('top','auto','important');
+    btn.style.setProperty('bottom','78px','important');
+    btn.style.setProperty('right','14px','important');
+    btn.style.setProperty('left','auto','important');
+    btn.style.setProperty('width','32px','important');
+    btn.style.setProperty('height','32px','important');
+    btn.style.setProperty('border-radius','10px','important');
+    btn.style.setProperty('z-index','250','important');
+    btn.style.setProperty('pointer-events','auto','important');
+    btn.style.setProperty('touch-action','manipulation','important');
+    btn.style.setProperty('background','rgba(8,14,18,.72)','important');
+    btn.style.setProperty('border','1px solid rgba(191,238,222,.32)','important');
+    btn.style.setProperty('backdrop-filter','blur(9px)','important');
+    btn.style.setProperty('box-shadow','0 6px 16px rgba(0,0,0,.34),0 0 12px rgba(25,233,140,.08)','important');
+    var svg=btn.querySelector('svg');
+    if(svg){svg.style.setProperty('width','16px','important');svg.style.setProperty('height','16px','important');svg.style.setProperty('stroke','#bfeede','important');svg.style.setProperty('pointer-events','none','important');}
+  }
   function patchButton(w,d){
-    var btn=d.querySelector('.chart-fsbtn');
-    if(!btn || btn.__crCleanFsPatched) return;
-    btn.__crCleanFsPatched=true;
+    var btn=findFsButton(d);
+    if(!btn) return;
+    forceButtonPosition(btn);
+    if(btn.__crBottomFsPatched) return;
+    btn.__crBottomFsPatched=true;
     var block=function(ev){ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();};
     var run=function(ev){
       ev.preventDefault(); ev.stopPropagation(); if(ev.stopImmediatePropagation) ev.stopImmediatePropagation();
@@ -41,18 +65,18 @@
       }catch(e){}
     };
     ['pointerdown','touchstart','mousedown'].forEach(function(type){btn.addEventListener(type,block,true);});
-    ['click'].forEach(function(type){btn.addEventListener(type,run,true);});
+    btn.addEventListener('click',run,true);
   }
   function patchInsideGame(){
     var w=child(), d=childDoc();
     if(!w||!d||!d.body) return false;
     if(!styleInjected && d.head){
       var st=d.createElement('style');
-      st.setAttribute('data-candlerun-clean-mobile-fs','v12.4');
+      st.setAttribute('data-candlerun-bottom-fs','v12.5');
       st.textContent=[
-        '.chart-fsbtn{top:auto!important;bottom:64px!important;right:10px!important;z-index:90!important;width:32px!important;height:32px!important;border-radius:10px!important;background:rgba(8,14,18,.72)!important;border:1px solid rgba(191,238,222,.32)!important;backdrop-filter:blur(9px)!important;box-shadow:0 6px 16px rgba(0,0,0,.34),0 0 12px rgba(25,233,140,.08)!important;pointer-events:auto!important;touch-action:manipulation!important;}',
-        '.chart-fsbtn svg{width:16px!important;height:16px!important;stroke:#bfeede!important;pointer-events:none!important;}',
-        '@media(max-width:430px){.chart-fsbtn{top:auto!important;bottom:64px!important;right:10px!important;width:32px!important;height:32px!important;border-radius:10px!important;}}'
+        '#chart-host button[data-act="chart-fullscreen"],#chart-host .chart-fsbtn{position:absolute!important;top:auto!important;bottom:78px!important;right:14px!important;left:auto!important;z-index:250!important;width:32px!important;height:32px!important;border-radius:10px!important;background:rgba(8,14,18,.72)!important;border:1px solid rgba(191,238,222,.32)!important;backdrop-filter:blur(9px)!important;box-shadow:0 6px 16px rgba(0,0,0,.34),0 0 12px rgba(25,233,140,.08)!important;pointer-events:auto!important;touch-action:manipulation!important;}',
+        '#chart-host button[data-act="chart-fullscreen"] svg,#chart-host .chart-fsbtn svg{width:16px!important;height:16px!important;stroke:#bfeede!important;pointer-events:none!important;}',
+        '@media(max-width:430px){#chart-host button[data-act="chart-fullscreen"],#chart-host .chart-fsbtn{top:auto!important;bottom:78px!important;right:14px!important;width:32px!important;height:32px!important;border-radius:10px!important;}}'
       ].join('\n');
       d.head.appendChild(st);
       styleInjected=true;
@@ -70,7 +94,7 @@
   frame.addEventListener('load',function(){setTimeout(function(){boot.classList.add('hide');},450);patchInsideGame();});
   window.addEventListener('resize',patchInsideGame);
   window.addEventListener('orientationchange',function(){setTimeout(patchInsideGame,250);});
-  setInterval(patchInsideGame,350);
+  setInterval(patchInsideGame,160);
 })();
 </script>
 </body>
